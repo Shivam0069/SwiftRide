@@ -11,6 +11,8 @@ const cors = require("cors");
 // Create an instance of an Express application
 const app = express();
 
+// Import the cookie-parser package to parse cookies attached to the client request object
+const cookieParser = require("cookie-parser");
 // Import a custom module to connect to the database
 const connectToDb = require("./db/db");
 
@@ -28,6 +30,8 @@ app.use(express.json());
 
 // Middleware to parse incoming requests with URL-encoded payloads
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 // Define a simple GET route for the root URL that responds with "Hello World"
 app.get("/", (req, res) => {

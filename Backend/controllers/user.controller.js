@@ -5,6 +5,7 @@ const userService = require("../services/user.service");
 // Importing the validation result function from express-validator
 const { validationResult } = require("express-validator");
 
+const blacklistTokenModel = require("../models/blacklistToken.model");
 // Register a new user
 module.exports.registerUser = async (req, res, next) => {
   try {
@@ -75,6 +76,9 @@ module.exports.loginUser = async (req, res, next) => {
     // Generate an authentication token for the user
     const token = user.generateAuthToken();
     // Return a 200 status with the token and user details
+
+    res.cookie("token", token);
+
     res.status(200).json({ token, user });
   } catch (error) {
     // Log any errors to the console
@@ -82,4 +86,23 @@ module.exports.loginUser = async (req, res, next) => {
     // Return a 500 status with an error message
     res.status(500).json({ message: "Internal Server Error" });
   }
+};
+
+// Get the user profile
+module.exports.getUserProfile = async (req, res, next) => {
+  // Return a 200 status with the user details from the request
+  res.status(200).json(req.user);
+};
+
+// Logout the user
+module.exports.logoutUser = async (req, res, next) => {
+  // Get the token from cookies or authorization header
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
+  // Add the token to the blacklist
+  await blacklistTokenModel.create({ token });
+  // Clear the token cookie
+  res.clearCookie("token");
+  // Return a 200 status with a success message
+  res.status(200).json({ message: "Logged out successfully" });
 };

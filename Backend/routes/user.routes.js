@@ -7,6 +7,7 @@ const { body } = require("express-validator");
 // Import the user controller
 const userController = require("../controllers/user.controller");
 
+const authMiddleware = require("../middlewares/auth.middleware");
 // Define a POST route for user registration
 router.post(
   "/register",
@@ -39,6 +40,23 @@ router.post(
   ],
   // Call the loginUser method from the user controller
   userController.loginUser
+);
+// Define a GET route for fetching user profile
+router.get(
+  "/profile",
+  // Use auth middleware to authenticate the user
+  authMiddleware.authUser,
+  // Call the getUserProfile method from the user controller
+  userController.getUserProfile
+);
+
+// Define a GET route for user logout
+router.get(
+  "/logout",
+  // Use auth middleware to authenticate the user
+  authMiddleware.authUser,
+  // Call the logoutUser method from the user controller
+  userController.logoutUser
 );
 
 // Export the router object

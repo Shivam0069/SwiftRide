@@ -173,3 +173,89 @@ Example:
 - `400 Bad Request`: Invalid input data.
 - `401 Unauthorized`: Invalid email or password.
 - `500 Internal Server Error`: Internal server error.
+
+### GET /users/profile
+
+#### Description
+
+Get the profile information of the currently authenticated user.
+
+#### Authentication Required
+
+Yes
+
+#### Responses
+
+- **200 OK**
+
+  - **Description**: Successfully retrieved user profile.
+  - **Body**: A JSON object containing the user profile details.
+  - **Example**:
+    ```json
+    {
+      "id": "user-id",
+      "username": "john_doe",
+      "email": "john.doe@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "phoneNumber": "123-456-7890",
+      "createdAt": "2023-01-01T00:00:00.000Z"
+    }
+    ```
+
+- **401 Unauthorized**
+
+  - **Description**: Authentication token is missing or invalid.
+  - **Body**: A JSON object containing the error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Unauthorized",
+      "error": "Token not found"
+    }
+    ```
+
+#### Status Codes
+
+- `200 OK`: Successfully retrieved user profile.
+- `401 Unauthorized`: Authentication token is missing or invalid.
+
+### POST /users/logout
+
+#### Description
+
+Logout the current user and blacklist the token provided in cookie or headers.
+
+#### Authentication Required
+
+Yes
+
+#### Responses
+
+- **200 OK**
+
+  - **Description**: Successfully logged out.
+  - **Body**: A JSON object containing a success message.
+  - **Example**:
+    ```json
+    {
+      "message": "Successfully logged out"
+    }
+    ```
+
+- **401 Unauthorized**
+
+  - **Description**: Authentication token is missing or invalid.
+  - **Body**: A JSON object containing the error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Unauthorized",
+      "error": "Token not found"
+    }
+    ```
+
+#### Status Codes
+
+- `200 OK`: Successfully logged out.
+- `401 Unauthorized`: Authentication token is missing or invalid.
