@@ -259,3 +259,121 @@ Yes
 
 - `200 OK`: Successfully logged out.
 - `401 Unauthorized`: Authentication token is missing or invalid.
+
+### POST /captions/register
+
+#### Description
+
+Registers a new caption in the system.
+
+#### Request Body
+
+The request body must be a JSON object containing the following fields:
+
+- `fullname`: An object containing:
+  - `firstname` (string, required): The first name of the caption. Must be at least 3 characters long.
+  - `lastname` (string, optional): The last name of the caption. Must be at least 3 characters long if provided.
+- `email` (string, required): The email address of the caption. Must be a valid email format.
+- `password` (string, required): The password for the caption account. Must be at least 6 characters long.
+- `vehicle`: An object containing:
+  - `color` (string, required): The color of the vehicle. Must be at least 3 characters long.
+  - `plate` (string, required): The plate number of the vehicle. Must be at least 3 characters long.
+  - `capacity` (number, required): The capacity of the vehicle. Must be at least 1.
+  - `vehicleType` (string, required): The type of the vehicle. Must be one of "car", "motorcycle", or "auto".
+
+Example:
+
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+#### Responses
+
+- **201 Created**
+
+  - **Description**: Caption successfully registered.
+  - **Body**: A JSON object containing the authentication token and caption details.
+  - **Example**:
+    ```json
+    {
+      "token": "jwt-token",
+      "caption": {
+        "_id": "caption-id",
+        "fullname": {
+          "firstname": "John",
+          "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "vehicle": {
+          "color": "red",
+          "plate": "ABC123",
+          "capacity": 4,
+          "vehicleType": "car"
+        }
+      }
+    }
+    ```
+
+- **400 Bad Request**
+  - **Description**: Invalid input data.
+  - **Body**: A JSON object containing the validation errors.
+  - **Example**:
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "Invalid Email",
+          "param": "email",
+          "location": "body"
+        },
+        {
+          "msg": "First name must be at least 3 characters long",
+          "param": "fullname.firstname",
+          "location": "body"
+        },
+        {
+          "msg": "Password must be at least 6 characters long",
+          "param": "password",
+          "location": "body"
+        },
+        {
+          "msg": "Color must be at least 3 characters long",
+          "param": "vehicle.color",
+          "location": "body"
+        },
+        {
+          "msg": "Plate must be at least 3 characters long",
+          "param": "vehicle.plate",
+          "location": "body"
+        },
+        {
+          "msg": "Capacity must be at least 1",
+          "param": "vehicle.capacity",
+          "location": "body"
+        },
+        {
+          "msg": "Invalid vehicle type",
+          "param": "vehicle.vehicleType",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+#### Status Codes
+
+- `201 Created`: Caption successfully registered.
+- `400 Bad Request`: Invalid input data.
