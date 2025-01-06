@@ -220,7 +220,7 @@ Yes
 - `200 OK`: Successfully retrieved user profile.
 - `401 Unauthorized`: Authentication token is missing or invalid.
 
-### POST /users/logout
+### GET /users/logout
 
 #### Description
 
@@ -260,21 +260,21 @@ Yes
 - `200 OK`: Successfully logged out.
 - `401 Unauthorized`: Authentication token is missing or invalid.
 
-### POST /captions/register
+### POST /captains/register
 
 #### Description
 
-Registers a new caption in the system.
+Registers a new captain in the system.
 
 #### Request Body
 
 The request body must be a JSON object containing the following fields:
 
 - `fullname`: An object containing:
-  - `firstname` (string, required): The first name of the caption. Must be at least 3 characters long.
-  - `lastname` (string, optional): The last name of the caption. Must be at least 3 characters long if provided.
-- `email` (string, required): The email address of the caption. Must be a valid email format.
-- `password` (string, required): The password for the caption account. Must be at least 6 characters long.
+  - `firstname` (string, required): The first name of the captain. Must be at least 3 characters long.
+  - `lastname` (string, optional): The last name of the captain. Must be at least 3 characters long if provided.
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain account. Must be at least 6 characters long.
 - `vehicle`: An object containing:
   - `color` (string, required): The color of the vehicle. Must be at least 3 characters long.
   - `plate` (string, required): The plate number of the vehicle. Must be at least 3 characters long.
@@ -304,14 +304,14 @@ Example:
 
 - **201 Created**
 
-  - **Description**: Caption successfully registered.
-  - **Body**: A JSON object containing the authentication token and caption details.
+  - **Description**: Captain successfully registered.
+  - **Body**: A JSON object containing the authentication token and captain details.
   - **Example**:
     ```json
     {
       "token": "jwt-token",
-      "caption": {
-        "_id": "caption-id",
+      "captain": {
+        "_id": "captain-id",
         "fullname": {
           "firstname": "John",
           "lastname": "Doe"
@@ -375,5 +375,91 @@ Example:
 
 #### Status Codes
 
-- `201 Created`: Caption successfully registered.
+- `201 Created`: Captain successfully registered.
 - `400 Bad Request`: Invalid input data.
+
+## Captain Routes
+
+### POST /captains/login
+
+Login Captain.
+
+**Request:**
+
+```json
+{
+  "email": "captain@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f9b1e8b001c8e4b8a",
+    "email": "captain@example.com",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "vehicle": {
+      "color": "red",
+      "capacity": 4,
+      "plate": "ABC123",
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### GET /captains/profile
+
+Get Captain Profile.
+
+**Request Headers:**
+
+```
+Authorization: Bearer <token>
+```
+
+**Response:**
+
+```json
+{
+  "captain": {
+    "_id": "60c72b2f9b1e8b001c8e4b8a",
+    "email": "captain@example.com",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "vehicle": {
+      "color": "red",
+      "capacity": 4,
+      "plate": "ABC123",
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### GET /captains/logout
+
+Logout Captain.
+
+**Request Headers:**
+
+```
+Authorization: Bearer <token>
+```
+
+**Response:**
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```

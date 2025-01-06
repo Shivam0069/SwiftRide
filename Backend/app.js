@@ -19,7 +19,7 @@ const connectToDb = require("./db/db");
 // Import user-related routes from a separate file
 const userRoutes = require("./routes/user.routes");
 
-const captionRoutes = require("./routes/caption.routes");
+const captainRoutes = require("./routes/captain.routes");
 
 // Call the connectToDb function to establish a connection to the database
 connectToDb();
@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 // Mount the user routes on the "/users" endpoint
 app.use("/users", userRoutes);
 
-app.use("/captions", captionRoutes);
+app.use("/captains", captainRoutes);
 
 // Export the app instance for use in other parts of the application
 module.exports = app;

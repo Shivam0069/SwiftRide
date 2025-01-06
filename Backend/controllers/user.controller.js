@@ -38,6 +38,8 @@ module.exports.registerUser = async (req, res, next) => {
 
     // Generate an authentication token for the new user
     const token = user.generateAuthToken();
+
+    user.password = undefined;
     // Return a 201 status with the token and user details
     res.status(201).json({ token, user });
   } catch (error) {
@@ -78,7 +80,7 @@ module.exports.loginUser = async (req, res, next) => {
     // Return a 200 status with the token and user details
 
     res.cookie("token", token);
-
+    user.password = undefined;
     res.status(200).json({ token, user });
   } catch (error) {
     // Log any errors to the console
