@@ -21,6 +21,8 @@ const userRoutes = require("./routes/user.routes");
 
 const captainRoutes = require("./routes/captain.routes");
 
+const emailVerificationRoutes = require("./routes/emailVerification.routes");
+
 // Call the connectToDb function to establish a connection to the database
 connectToDb();
 
@@ -44,6 +46,8 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 
 app.use("/captains", captainRoutes);
+
+app.use("/email", emailVerificationRoutes);
 
 // Export the app instance for use in other parts of the application
 module.exports = app;

@@ -6,6 +6,8 @@ const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 
 const blacklistTokenModel = require("../models/blacklistToken.model");
+
+const verifiedEmailModel = require("../models/verifiedEmail.model");
 // Register a new user
 module.exports.registerUser = async (req, res, next) => {
   try {
@@ -19,7 +21,6 @@ module.exports.registerUser = async (req, res, next) => {
     // Destructure fullname, email, and password from the request body
     const { fullname, email, password } = req.body;
     // Hash the user's password
-    const hashedPassword = await userModel.hashPassword(password);
 
     // Check if a user with the given email already exists
     const existingUser = await userModel.findOne({ email });
@@ -27,6 +28,15 @@ module.exports.registerUser = async (req, res, next) => {
       // If the email already exists, return a 400 status with an error message
       return res.status(400).json({ message: "Email already exists" });
     }
+
+    const existingVerifiedEmail = await verifiedEmailModel.findOne({
+      email,
+      verified: true,
+    });
+    if (!existingVerifiedEmail) {
+      return res.status(400).json({ message: "Email not verified" });
+    }
+    const hashedPassword = await userModel.hashPassword(password);
 
     // Create a new user with the provided details
     const user = await userService.createUser({
