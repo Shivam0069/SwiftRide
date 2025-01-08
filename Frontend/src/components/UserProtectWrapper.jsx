@@ -17,9 +17,9 @@ const UserProtectWrapper = ({ children }) => {
   }, [isAuthenticated, navigate, isLoading]); // Ensure useEffect runs when authentication status changes
 
   // While the authentication status is being checked, you can optionally show a loading state
-  if (isLoading && !isAuthenticated) {
+  if (isLoading) {
     return (
-      <div className="h-screen bg-black text-white w-screen flex items-center justify-center">
+      <div className="h-screen bg-[#191919] text-white w-screen flex items-center justify-center">
         Loading...
       </div>
     );

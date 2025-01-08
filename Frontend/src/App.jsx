@@ -10,6 +10,8 @@ import UserSignup from "./pages/UserSignup";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import UserProtectWrapper from "./components/UserProtectWrapper";
+import CaptainHome from "./pages/CaptainHome";
+import CaptainProtectWrapper from "./components/CaptainProtectWrapper";
 export default function App() {
   return (
     <div>
@@ -27,6 +29,14 @@ export default function App() {
             <UserProtectWrapper>
               <Home />
             </UserProtectWrapper>
+          }
+        />
+        <Route
+          path="/captain-home"
+          element={
+            <CaptainProtectWrapper>
+              <CaptainHome />
+            </CaptainProtectWrapper>
           }
         />
       </Routes>

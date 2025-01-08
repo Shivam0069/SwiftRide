@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import swiftRideLogo from "../assets/swiftRideLogo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { CaptainDataContext } from "../context/CaptainContext";
+import toast from "react-hot-toast";
 
 const CaptainLogin = () => {
   const [captainData, setCaptainData] = useState({
@@ -10,9 +12,19 @@ const CaptainLogin = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { loginCaptain } = useContext(CaptainDataContext);
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const success = await loginCaptain(captainData);
+
+    if (success) {
+      toast.success("Login Success");
+      navigate("/captain-home");
+    } else {
+      toast.error("Login Failed");
+    }
 
     setCaptainData({
       email: "",

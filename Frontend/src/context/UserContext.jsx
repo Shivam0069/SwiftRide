@@ -72,8 +72,11 @@ const UserContext = ({ children }) => {
         setIsAuthenticated(true);
         return true;
       }
+      setIsAuthenticated(false);
       return false;
     } catch (error) {
+      setIsAuthenticated(false);
+
       console.error("Login failed:", error);
       return false;
     } finally {
@@ -103,12 +106,13 @@ const UserContext = ({ children }) => {
       <UserDataContext.Provider
         value={{
           user,
-          setUser,
+
           isAuthenticated,
           isLoading,
           setIsLoading,
           loginUser,
           RegisterUser,
+          logoutUser,
         }}
       >
         {children}

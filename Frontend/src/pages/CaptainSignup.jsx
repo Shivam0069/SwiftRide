@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { CaptainDataContext } from "../context/CaptainContext";
+import toast from "react-hot-toast";
 
 const CaptainSignup = () => {
   const [captainData, setCaptainData] = useState({
@@ -10,23 +12,32 @@ const CaptainSignup = () => {
       firstname: "",
       lastname: "",
     },
-    // vehicle: {
-    //   color: "",
-    //   plate: "",
-    //   capacity: 0,
-    //   vehicleType: "car",
-    // },
+    vehicle: {
+      color: "",
+      plate: "",
+      capacity: 0,
+      vehicleType: "",
+    },
   });
   const [isVerified, setIsVerified] = useState(false);
   const [enterOTP, setEnterOTP] = useState(false);
   const [otp, setOtp] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { RegisterCaptain } = useContext(CaptainDataContext);
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     console.log(captainData);
+
+    const success = await RegisterCaptain(captainData);
+    if (success) {
+      toast.success("Register Success");
+      navigate("/captain-home");
+    } else {
+      toast.error("Register Failed");
+    }
 
     setCaptainData({
       email: "",
@@ -35,12 +46,12 @@ const CaptainSignup = () => {
         firstname: "",
         lastname: "",
       },
-      // vehicle: {
-      //   color: "",
-      //   plate: "",
-      //   capacity: 0,
-      //   vehicleType: "",
-      // },
+      vehicle: {
+        color: "",
+        plate: "",
+        capacity: 0,
+        vehicleType: "",
+      },
     });
   };
 
@@ -150,7 +161,7 @@ const CaptainSignup = () => {
                 />
               ))}
           </div>
-          {/* <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <div className="w-1/2">
               <h3 className="text-lg font-medium  mb-2">Vehicle Color</h3>
               <input
@@ -162,7 +173,7 @@ const CaptainSignup = () => {
                   })
                 }
                 className="bg-[#111] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-base"
-                // required
+                required
                 type="text"
                 placeholder="Vehicle Color"
               />
@@ -178,7 +189,7 @@ const CaptainSignup = () => {
                   })
                 }
                 className="bg-[#111] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-base"
-                // required
+                required
                 type="text"
                 placeholder="Vehicle Plate"
               />
@@ -199,7 +210,7 @@ const CaptainSignup = () => {
                   })
                 }
                 className="bg-[#111] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-base"
-                // required
+                required
                 type="number"
                 placeholder="Vehicle Capacity"
               />
@@ -217,16 +228,19 @@ const CaptainSignup = () => {
                     },
                   })
                 }
-                className="bg-[#111] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-base"
-                // required
+                className="bg-[#111] mb-5 rounded px-4 py-2 border w-full text-sm placeholder:text-base"
+                required
                 type="text"
               >
+                <option selected value="" disabled>
+                  Select Vehicle Type
+                </option>
                 <option value="car">Car</option>
                 <option value="motorcycle">Motorcycle</option>
                 <option value="auto">Auto</option>
               </select>
             </div>
-          </div> */}
+          </div>
           <button className="bg-custom-gradient font-semibold text-white mb-3 rounded px-4 py-2  w-full text-base placeholder:text-base">
             Login
           </button>
