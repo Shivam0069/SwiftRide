@@ -4,6 +4,7 @@ export const UserDataContext = createContext();
 
 const UserContext = ({ children }) => {
   const [user, setUser] = useState({
+    _id: "",
     email: "",
     fullname: {
       firstname: "",
@@ -14,26 +15,28 @@ const UserContext = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    const controller = new AbortController();
     const userProfile = async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/users/profile`,
-          { withCredentials: true }
+          { withCredentials: true, signal: controller.signal }
         );
-        console.log("profile response", response);
-
         if (response.status === 200) {
           setUser(response.data);
           setIsAuthenticated(true);
         }
       } catch (error) {
+        if (error.name !== "CanceledError") {
+          console.error(error);
+        }
         setIsAuthenticated(false);
-        console.log(error);
       } finally {
         setIsLoading(false);
       }
     };
     userProfile();
+    return () => controller.abort();
   }, []);
 
   const loginUser = async (credentials) => {
@@ -91,7 +94,15 @@ const UserContext = ({ children }) => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setUser(null);
+        setUser({
+          _id: "",
+          email: "",
+          fullname: {
+            firstname: "",
+
+            lastname: "",
+          },
+        });
         setIsAuthenticated(false);
         return true;
       }
@@ -109,7 +120,7 @@ const UserContext = ({ children }) => {
 
           isAuthenticated,
           isLoading,
-          setIsLoading,
+
           loginUser,
           RegisterUser,
           logoutUser,

@@ -29,8 +29,6 @@ const CaptainSignup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    console.log(captainData);
-
     const success = await RegisterCaptain(captainData);
     if (success) {
       toast.success("Register Success");

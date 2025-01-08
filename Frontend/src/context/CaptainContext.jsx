@@ -5,41 +5,35 @@ export const CaptainDataContext = createContext();
 const CaptainContext = ({ children }) => {
   const [captain, setCaptain] = useState({
     email: "",
-
-    fullname: {
-      firstname: "",
-      lastname: "",
-    },
-    vehicle: {
-      color: "",
-      plate: "",
-      capacity: 0,
-      vehicleType: "",
-    },
+    fullname: { firstname: "", lastname: "" },
+    vehicle: { color: "", plate: "", capacity: 0, vehicleType: "" },
   });
   const [captainIsLoading, setCaptainIsLoading] = useState(true);
   const [captainIsAuthenticated, setCaptainIsAuthenticated] = useState(false);
+
   useEffect(() => {
+    const controller = new AbortController();
     const captainProfile = async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/captains/profile`,
-          { withCredentials: true }
+          { withCredentials: true, signal: controller.signal }
         );
-        console.log("profile response", response);
-
         if (response.status === 200) {
           setCaptain(response.data);
           setCaptainIsAuthenticated(true);
         }
       } catch (error) {
+        if (error.name !== "CanceledError") {
+          console.log(error);
+        }
         setCaptainIsAuthenticated(false);
-        console.log(error);
       } finally {
         setCaptainIsLoading(false);
       }
     };
     captainProfile();
+    return () => controller.abort();
   }, []);
 
   const RegisterCaptain = async (credentials) => {
@@ -50,17 +44,15 @@ const CaptainContext = ({ children }) => {
         credentials,
         { withCredentials: true }
       );
-
       if (response.status === 201) {
         setCaptain(response.data.captain);
         setCaptainIsAuthenticated(true);
         return true;
       }
-      setCaptainIsAuthenticated(false);
       return false;
     } catch (error) {
       setCaptainIsAuthenticated(false);
-      console.error("Login failed:", error);
+      console.error("Registration failed:", error);
       return false;
     } finally {
       setCaptainIsLoading(false);
@@ -71,11 +63,10 @@ const CaptainContext = ({ children }) => {
     try {
       setCaptainIsLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/users/login`,
+        `${import.meta.env.VITE_BASE_URL}/captains/login`,
         credentials,
         { withCredentials: true }
       );
-
       if (response.status === 200) {
         setCaptain(response.data.captain);
         setCaptainIsAuthenticated(true);
@@ -89,6 +80,7 @@ const CaptainContext = ({ children }) => {
       setCaptainIsLoading(false);
     }
   };
+
   const logoutCaptain = async () => {
     try {
       const response = await axios.get(
@@ -96,32 +88,35 @@ const CaptainContext = ({ children }) => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setCaptain(null);
+        setCaptain({
+          _id: "",
+          email: "",
+          fullname: { firstname: "", lastname: "" },
+          vehicle: { color: "", plate: "", capacity: 0, vehicleType: "" },
+        });
         setCaptainIsAuthenticated(false);
         return true;
       }
-
       return false;
     } catch (error) {
       console.log("Error logging out:", error);
       return false;
     }
   };
+
   return (
-    <div>
-      <CaptainDataContext.Provider
-        value={{
-          captain,
-          captainIsAuthenticated,
-          captainIsLoading,
-          loginCaptain,
-          RegisterCaptain,
-          logoutCaptain,
-        }}
-      >
-        {children}
-      </CaptainDataContext.Provider>
-    </div>
+    <CaptainDataContext.Provider
+      value={{
+        captain,
+        captainIsAuthenticated,
+        captainIsLoading,
+        loginCaptain,
+        RegisterCaptain,
+        logoutCaptain,
+      }}
+    >
+      {children}
+    </CaptainDataContext.Provider>
   );
 };
 

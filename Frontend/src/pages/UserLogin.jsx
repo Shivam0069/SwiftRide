@@ -17,7 +17,6 @@ const UserLogin = () => {
   const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(userData);
 
     const success = await loginUser(userData);
     if (success) {
