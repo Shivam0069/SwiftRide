@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { GoVerified } from "react-icons/go";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
+import toast from "react-hot-toast";
+
 const UserSignup = () => {
   const [userData, setUserData] = useState({
     fullname: {
@@ -17,10 +20,20 @@ const UserSignup = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(userData);
+  const navigate = useNavigate();
 
+  const { RegisterUser } = useContext(UserDataContext);
+  const submitHandler = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    const success = await RegisterUser(userData);
+    if (success) {
+      toast.success("Register Success");
+      navigate("/home");
+    } else {
+      toast.error("Register Failed");
+    }
+    // Reset form fields
     setUserData({
       fullname: {
         firstname: "",
@@ -104,6 +117,7 @@ const UserSignup = () => {
             />
 
             <button
+              type="button"
               onClick={sendVerificationEmail}
               className={`absolute right-2 top-[8px] transform  border px-2 rounded text-white ${
                 isVerified ? "bg-custom-gradient" : "bg-gray-400"
@@ -138,7 +152,10 @@ const UserSignup = () => {
                 />
               ))}
           </div>
-          <button className="bg-custom-gradient font-semibold text-white mb-3 rounded px-4 py-2  w-full text-base placeholder:text-base">
+          <button
+            type="submit"
+            className="bg-custom-gradient font-semibold text-white mb-3 rounded px-4 py-2  w-full text-base placeholder:text-base"
+          >
             Create account
           </button>
         </form>

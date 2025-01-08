@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import swiftRideLogo from "../assets/swiftRideLogo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
+import toast from "react-hot-toast";
 const UserLogin = () => {
   const [userData, setUserData] = useState({
     email: "",
@@ -10,11 +12,20 @@ const UserLogin = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const { loginUser } = useContext(UserDataContext);
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(userData);
 
+    const success = await loginUser(userData);
+    if (success) {
+      toast.success("Login Success");
+      navigate("/home");
+    } else {
+      toast.error("Login Failed");
+    }
     setUserData({
       email: "",
       password: "",

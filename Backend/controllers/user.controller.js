@@ -8,6 +8,8 @@ const { validationResult } = require("express-validator");
 const blacklistTokenModel = require("../models/blacklistToken.model");
 
 const verifiedEmailModel = require("../models/verifiedEmail.model");
+const bcrypt = require("bcrypt");
+
 // Register a new user
 module.exports.registerUser = async (req, res, next) => {
   try {
@@ -29,13 +31,13 @@ module.exports.registerUser = async (req, res, next) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    const existingVerifiedEmail = await verifiedEmailModel.findOne({
-      email,
-      verified: true,
-    });
-    if (!existingVerifiedEmail) {
-      return res.status(400).json({ message: "Email not verified" });
-    }
+    // const existingVerifiedEmail = await verifiedEmailModel.findOne({
+    //   email,
+    //   verified: true,
+    // });
+    // if (!existingVerifiedEmail) {
+    //   return res.status(400).json({ message: "Email not verified" });
+    // }
     const hashedPassword = await userModel.hashPassword(password);
 
     // Create a new user with the provided details
@@ -50,8 +52,9 @@ module.exports.registerUser = async (req, res, next) => {
     const token = user.generateAuthToken();
 
     user.password = undefined;
+    res.cookie("token", token);
     // Return a 201 status with the token and user details
-    res.status(201).json({ token, user });
+    res.status(201).json({ user, message: "User registered successfully!" });
   } catch (error) {
     // Log any errors to the console
     console.error(error);
@@ -75,8 +78,10 @@ module.exports.loginUser = async (req, res, next) => {
   try {
     // Find the user by email and include the password field
     const user = await userModel.findOne({ email }).select("+password");
+
     if (!user) {
       // If the user is not found, return a 401 status with an error message
+
       return res.status(401).json({ message: "Invalid email or password" });
     }
     // Compare the provided password with the stored hashed password
@@ -91,7 +96,9 @@ module.exports.loginUser = async (req, res, next) => {
 
     res.cookie("token", token);
     user.password = undefined;
-    res.status(200).json({ token, user });
+    res
+      .status(200)
+      .json({ token, user, message: "User logged in successfully!" });
   } catch (error) {
     // Log any errors to the console
     console.error(error);

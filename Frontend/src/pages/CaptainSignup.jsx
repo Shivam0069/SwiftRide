@@ -25,10 +25,6 @@ const CaptainSignup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    captainData.fullname.middlename =
-      captainData.fullname.firstname.split(" ")[1];
-    captainData.fullname.firstname =
-      captainData.fullname.firstname.split(" ")[0];
 
     console.log(captainData);
 

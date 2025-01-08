@@ -8,6 +8,7 @@ module.exports.authUser = async (req, res, next) => {
   try {
     // Get the token from cookies or authorization header
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
     if (!token) {
       // If no token is found, return a 401 Unauthorized response
       return res

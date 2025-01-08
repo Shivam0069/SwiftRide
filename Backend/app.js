@@ -27,7 +27,12 @@ const emailVerificationRoutes = require("./routes/emailVerification.routes");
 connectToDb();
 
 // Enable CORS to allow requests from other origins
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());

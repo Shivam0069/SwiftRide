@@ -23,7 +23,6 @@ module.exports.createUser = async ({
   }
 
   // Hash the provided password with a salt factor of 10
-  const hashedPassword = await bcrypt.hash(password, 10);
 
   // Create a new user instance with the provided data and the hashed password
   const user = new userModel({
@@ -32,7 +31,7 @@ module.exports.createUser = async ({
       lastname, // Set the last name in the `fullname` field
     },
     email, // Set the email field
-    password: hashedPassword, // Store the hashed password
+    password, // Store the hashed password
   });
 
   // Save the new user to the database and return the saved document
