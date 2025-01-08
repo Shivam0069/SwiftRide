@@ -80,6 +80,24 @@ const UserContext = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+  const logoutUser = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/users/logout`,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setUser(null);
+        setIsAuthenticated(false);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.log("Error logging out:", error);
+      return false;
+    }
+  };
   return (
     <div>
       <UserDataContext.Provider
