@@ -33,6 +33,7 @@ module.exports.registerCaptain = async (req, res, next) => {
     });
 
     const token = captain.generateAuthToken();
+    res.cookie("token", token);
 
     captain.password = undefined;
     res.status(201).json({ token, captain });
