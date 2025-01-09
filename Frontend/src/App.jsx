@@ -15,7 +15,7 @@ import LoginSignupProtectWrapper from "./components/LoginSignupProtectWrapper";
 
 export default function App() {
   return (
-    <div>
+    <div className="select-none">
       <Header />
       <Toaster position="bottom-center" reverseOrder={false} />
       <Routes>

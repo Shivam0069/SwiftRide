@@ -5,12 +5,15 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import UserContext from "./context/UserContext.jsx";
 import CaptainContext from "./context/CaptainContext.jsx";
+import UserPanelContext from "./context/UserPanelContext.jsx";
 createRoot(document.getElementById("root")).render(
   <UserContext>
     <CaptainContext>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <UserPanelContext>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </UserPanelContext>
     </CaptainContext>
   </UserContext>
 );
