@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import { Toaster } from "react-hot-toast";
@@ -12,8 +12,28 @@ import CaptainHome from "./pages/CaptainHome";
 import UserProtectWrapper from "./components/UserProtectWrapper";
 import CaptainProtectWrapper from "./components/CaptainProtectWrapper";
 import LoginSignupProtectWrapper from "./components/LoginSignupProtectWrapper";
+import Riding from "./pages/Riding";
 
 export default function App() {
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  //   if (/(Windows|Macintosh|Linux)/i.test(userAgent)) {
+  //     alert("Access is only granted through mobile devices.");
+  //     window.location.href = "https://www.google.com/";
+  //     return;
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, []);
+  // if (isLoading) {
+  //   return (
+  //     <div className="bg-black h-screen w-screen flex items-center justify-center">
+  //       Loading...
+  //     </div>
+  //   );
+  // }
+
   return (
     <div className="select-none">
       <Header />
@@ -34,6 +54,14 @@ export default function App() {
             <LoginSignupProtectWrapper>
               <UserSignup />
             </LoginSignupProtectWrapper>
+          }
+        />
+        <Route
+          path="/riding"
+          element={
+            <UserProtectWrapper>
+              <Riding />
+            </UserProtectWrapper>
           }
         />
         <Route
