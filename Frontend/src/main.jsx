@@ -6,13 +6,16 @@ import { BrowserRouter } from "react-router-dom";
 import UserContext from "./context/UserContext.jsx";
 import CaptainContext from "./context/CaptainContext.jsx";
 import UserPanelContext from "./context/UserPanelContext.jsx";
+import CaptainPanelContext from "./context/CaptainPanelContext.jsx";
 createRoot(document.getElementById("root")).render(
   <UserContext>
     <CaptainContext>
       <UserPanelContext>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <CaptainPanelContext>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </CaptainPanelContext>
       </UserPanelContext>
     </CaptainContext>
   </UserContext>

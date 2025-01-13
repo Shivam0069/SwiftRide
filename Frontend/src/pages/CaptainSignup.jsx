@@ -240,7 +240,7 @@ const CaptainSignup = () => {
             </div>
           </div>
           <button className="bg-custom-gradient font-semibold text-white mb-3 rounded px-4 py-2  w-full text-base placeholder:text-base">
-            Login
+            Sign Up
           </button>
         </form>
         <p className="text-left">

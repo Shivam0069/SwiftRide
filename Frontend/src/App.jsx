@@ -13,6 +13,7 @@ import UserProtectWrapper from "./components/UserProtectWrapper";
 import CaptainProtectWrapper from "./components/CaptainProtectWrapper";
 import LoginSignupProtectWrapper from "./components/LoginSignupProtectWrapper";
 import Riding from "./pages/Riding";
+import CaptainRiding from "./pages/CaptainRiding";
 
 export default function App() {
   // const [isLoading, setIsLoading] = useState(true);
@@ -93,6 +94,14 @@ export default function App() {
           element={
             <CaptainProtectWrapper>
               <CaptainHome />
+            </CaptainProtectWrapper>
+          }
+        />
+        <Route
+          path="/captain-riding"
+          element={
+            <CaptainProtectWrapper>
+              <CaptainRiding />
             </CaptainProtectWrapper>
           }
         />

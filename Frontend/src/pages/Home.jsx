@@ -8,6 +8,10 @@ import ConfirmRide from "../components/ConfirmRide";
 import LookingForRidder from "../components/LookingForRidder";
 import WaitingForRidder from "../components/WaitingForRidder";
 import { UserPanelDataContext } from "../context/UserPanelContext";
+import { IoIosLogOut } from "react-icons/io";
+import { UserDataContext } from "../context/UserContext";
+import toast from "react-hot-toast";
+
 const Home = () => {
   const {
     panel,
@@ -23,8 +27,27 @@ const Home = () => {
     e.preventDefault();
   };
 
+  const { logoutUser } = useContext(UserDataContext);
+
+  const logoutHandler = async () => {
+    const success = await logoutUser();
+    if (success) {
+      toast.success("Logged Out!!");
+      navigate("/login");
+    } else {
+      toast.error("Failed to Logout!!");
+    }
+  };
+
   return (
     <div className="bg-[#191919] h-screen w-full relative overflow-hidden">
+      {" "}
+      <div
+        onClick={logoutHandler}
+        className="z-10 absolute top-6  right-4 p-1 bg-gray-200 rounded-full  "
+      >
+        <IoIosLogOut className="h-8 w-8" />
+      </div>
       <div
         onClick={() => {
           setPanel(false);
@@ -99,7 +122,6 @@ const Home = () => {
           <LocationSearchPanel />
         </div>
       </div>
-
       <VehiclePanel />
       <ConfirmRide />
       <LookingForRidder />
