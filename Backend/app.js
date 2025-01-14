@@ -21,7 +21,11 @@ const userRoutes = require("./routes/user.routes");
 
 const captainRoutes = require("./routes/captain.routes");
 
+const mapsRoutes = require("./routes/maps.routes");
+
 const emailVerificationRoutes = require("./routes/emailVerification.routes");
+
+const rideRoutes = require("./routes/ride.routes");
 
 // Call the connectToDb function to establish a connection to the database
 connectToDb();
@@ -53,6 +57,10 @@ app.use("/users", userRoutes);
 app.use("/captains", captainRoutes);
 
 app.use("/email", emailVerificationRoutes);
+
+app.use("/maps", mapsRoutes);
+
+app.use("/rides", rideRoutes);
 
 // Export the app instance for use in other parts of the application
 module.exports = app;
