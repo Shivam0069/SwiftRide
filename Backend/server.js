@@ -6,6 +6,9 @@ const app = require("./app");
 const port = process.env.PORT | 3000;
 // Create an HTTP server using the app module
 const server = http.createServer(app);
+const { initializeSocket } = require("./socket");
+// Initialize the socket
+initializeSocket(server);
 // Start the server and listen on the defined port, logging a message to the console when the server is running
 server.listen(port, () => {
   console.log(`server is running on port ${port}`);
