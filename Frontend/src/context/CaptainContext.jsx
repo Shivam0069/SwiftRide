@@ -20,7 +20,7 @@ const CaptainContext = ({ children }) => {
           { withCredentials: true, signal: controller.signal }
         );
         if (response.status === 200) {
-          setCaptain(response.data);
+          setCaptain(response.data.captain);
           setCaptainIsAuthenticated(true);
         }
       } catch (error) {

@@ -5,27 +5,30 @@ import Moto from "../assets/motorcycle.webp";
 import { UserPanelDataContext } from "../context/UserPanelContext";
 import VehicleFairCard from "./VehicleFairCard";
 const VehiclePanel = () => {
-  const { vehiclePanelOpen } = useContext(UserPanelDataContext);
+  const { vehiclePanelOpen, fare } = useContext(UserPanelDataContext);
   const vehicles = [
     {
       vehicleType: "UberGo",
       vehicleImage: UberGo,
       capacity: 4,
-      fair: 198.2,
+      fare: fare.car || "...",
       time: 10,
+      name: "car",
     },
     {
       vehicleType: "UberAuto",
       vehicleImage: UberAuto,
       capacity: 3,
-      fair: 105.5,
+      fare: fare.auto || "...",
+      name: "auto",
       time: 5,
     },
     {
       vehicleType: "Moto",
       vehicleImage: Moto,
       capacity: 1,
-      fair: 65.0,
+      fare: fare.motorcycle || "...",
+      name: "motorcycle",
       time: 3,
     },
   ];
@@ -48,8 +51,9 @@ const VehiclePanel = () => {
             vehicleType={vehicle.vehicleType}
             vehicleImage={vehicle.vehicleImage}
             capacity={vehicle.capacity}
-            fair={vehicle.fair}
+            fare={vehicle.fare}
             time={vehicle.time}
+            name={vehicle.name}
           />
         ))}
       </div>

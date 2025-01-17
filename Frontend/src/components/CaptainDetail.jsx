@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { GoClock } from "react-icons/go";
 import { SlSpeedometer } from "react-icons/sl";
 import { CiViewList } from "react-icons/ci";
 import UberGo from "../assets/UberGo.png";
+import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainDetail = () => {
+  const { captain } = useContext(CaptainDataContext);
+  console.log(captain);
+
   return (
     <div
       className={`bg-[#191919] text-white p-4 transition-all duration-500 pb-8 z-10 absolute bottom-0 left-0 w-full rounded-t-xl
@@ -17,7 +21,9 @@ const CaptainDetail = () => {
             alt="Selected Vehicle"
             className="w-16 h-16 object-contain"
           />
-          <div className="text-lg font-medium text-gray-400">Shivam Singh</div>
+          <div className="text-lg font-medium text-gray-400">
+            {captain?.fullname?.firstname} {captain?.fullname?.lastname}
+          </div>
         </div>
 
         <div className="text-right">

@@ -6,8 +6,9 @@ const VehicleFairCard = ({
   vehicleType = "UberGo",
   vehicleImage = UberGo,
   capacity = 4,
-  fair = 198.2,
+  fare = 198.2,
   time = 10,
+  name,
 }) => {
   const { setConfirmRidePanelOpen, setVehiclePanelOpen, setSelectedRide } =
     useContext(UserPanelDataContext);
@@ -25,8 +26,9 @@ const VehicleFairCard = ({
             vehicleType,
             vehicleImage,
             capacity,
-            fair,
+            fare,
             time,
+            name,
           });
         }}
         className="border-b-2 active:border-2 p-2 w-full rounded-lg border-gray-400 flex gap-1 "
@@ -43,7 +45,7 @@ const VehicleFairCard = ({
                 <div className="text-sm items-end">{capacity}</div>
               </div>
             </div>
-            <div>&#8377; {fair}</div>
+            <div>&#8377; {fare}</div>
           </div>
           <div className="font-medium"> {time} mins away</div>
           <div className="font-light text-xs">Affordable, compact rides</div>

@@ -5,7 +5,7 @@ import { FaCreditCard } from "react-icons/fa6";
 import { UserPanelDataContext } from "../context/UserPanelContext";
 
 const LookingForRidder = () => {
-  const { lookingForRidderPanelOpen, selectedRide } =
+  const { lookingForRidderPanelOpen, selectedRide, completeRoute } =
     useContext(UserPanelDataContext);
   return (
     <div
@@ -32,9 +32,11 @@ const LookingForRidder = () => {
             <RiMapPinRangeFill className="w-8 h-8" />
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
-            <div className="font-semibold text-gray-50 text-lg">562/11-A</div>
-            <div className="font-medium">
-              Kaikondrahalli, Bengaluru, Karnataka
+            <div className="font-semibold text-gray-50 text-lg line-clamp-1">
+              {completeRoute.pickup?.structured_formatting?.main_text}
+            </div>
+            <div className="font-medium line-clamp-2">
+              {completeRoute.pickup?.structured_formatting?.secondary_text}
             </div>
           </div>
         </div>
@@ -43,9 +45,11 @@ const LookingForRidder = () => {
             <FaSquare className="w-6 h-6" />
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
-            <div className="font-semibold text-gray-50 text-lg">562/11-A</div>
-            <div className="font-medium">
-              Kaikondrahalli, Bengaluru, Karnataka
+            <div className="font-semibold text-gray-50 text-lg line-clamp-1">
+              {completeRoute.destination?.structured_formatting?.main_text}
+            </div>
+            <div className="font-medium line-clamp-2">
+              {completeRoute.destination?.structured_formatting?.secondary_text}
             </div>
           </div>
         </div>
@@ -55,7 +59,7 @@ const LookingForRidder = () => {
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
             <div className="font-semibold text-gray-50 text-lg">
-              &#8377;{selectedRide?.fair}
+              &#8377; {selectedRide?.fare}
             </div>
             <div className="font-medium">Cash Cash</div>
           </div>

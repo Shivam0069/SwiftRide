@@ -1,16 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import mapImg from "../assets/mapImg.png";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 
-import VehiclePanel from "../components/VehiclePanel";
+import toast from "react-hot-toast";
+import { IoIosLogOut } from "react-icons/io";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForRidder from "../components/LookingForRidder";
+import VehiclePanel from "../components/VehiclePanel";
 import WaitingForRidder from "../components/WaitingForRidder";
-import { UserPanelDataContext } from "../context/UserPanelContext";
-import { IoIosLogOut } from "react-icons/io";
 import { UserDataContext } from "../context/UserContext";
-import toast from "react-hot-toast";
+import { UserPanelDataContext } from "../context/UserPanelContext";
 
 const Home = () => {
   const {
@@ -21,13 +21,13 @@ const Home = () => {
     setLookingForRidderPanelOpen,
     route,
     setRoute,
+    setActiveField,
   } = useContext(UserPanelDataContext);
+  const { logoutUser } = useContext(UserDataContext);
 
   const submitHandler = (e) => {
     e.preventDefault();
   };
-
-  const { logoutUser } = useContext(UserDataContext);
 
   const logoutHandler = async () => {
     const success = await logoutUser();
@@ -37,6 +37,14 @@ const Home = () => {
     } else {
       toast.error("Failed to Logout!!");
     }
+  };
+
+  const handlePickupChange = (e) => {
+    setRoute({ ...route, pickup: e.target.value });
+  };
+
+  const handleDestinationChange = (e) => {
+    setRoute({ ...route, destination: e.target.value });
   };
 
   return (
@@ -97,8 +105,11 @@ const Home = () => {
                 value={route.pickup}
                 className="py-2 px-4 pl-10 bg-[#111] text-gray-200 border w-full rounded"
                 placeholder="Add a pick-up location"
-                onChange={(e) => setRoute({ ...route, pickup: e.target.value })}
-                onClick={() => setPanel(true)}
+                onChange={(e) => handlePickupChange(e)}
+                onClick={() => {
+                  setPanel(true);
+                  setActiveField("pickup");
+                }}
               />
             </div>
             <div className="absolute top-[50%] translate-y-[-50%] left-[11px] h-[44px] z-10 w-[1px] border border-white before:absolute before:-top-3 before:-left-1  before:h-2 before:w-2 before:rounded-full before:border  after:absolute after:-left-1  after:-bottom-3  after:h-2 after:w-2 after:border"></div>
@@ -109,10 +120,11 @@ const Home = () => {
                 value={route.destination}
                 className="py-2 px-4 pl-10 border placeholder:text-base text-gray-200 text-base bg-[#111] w-full rounded"
                 placeholder="Enter your destination"
-                onChange={(e) =>
-                  setRoute({ ...route, destination: e.target.value })
-                }
-                onClick={() => setPanel(true)}
+                onChange={(e) => handleDestinationChange(e)}
+                onClick={() => {
+                  setPanel(true);
+                  setActiveField("destination");
+                }}
               />
             </div>
           </form>

@@ -7,14 +7,17 @@ import UserContext from "./context/UserContext.jsx";
 import CaptainContext from "./context/CaptainContext.jsx";
 import UserPanelContext from "./context/UserPanelContext.jsx";
 import CaptainPanelContext from "./context/CaptainPanelContext.jsx";
+import RideContext from "./context/RideContext.jsx";
 createRoot(document.getElementById("root")).render(
   <UserContext>
     <CaptainContext>
       <UserPanelContext>
         <CaptainPanelContext>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <RideContext>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </RideContext>
         </CaptainPanelContext>
       </UserPanelContext>
     </CaptainContext>
