@@ -77,7 +77,10 @@ module.exports.loginUser = async (req, res, next) => {
 
   try {
     // Find the user by email and include the password field
+    console.log("1");
+
     const user = await userModel.findOne({ email }).select("+password");
+    console.log("2");
 
     if (!user) {
       // If the user is not found, return a 401 status with an error message

@@ -13,22 +13,25 @@ const app = express();
 
 // Import the cookie-parser package to parse cookies attached to the client request object
 const cookieParser = require("cookie-parser");
+
 // Import a custom module to connect to the database
 const connectToDb = require("./db/db");
 
 // Import user-related routes from a separate file
 const userRoutes = require("./routes/user.routes");
-
 const captainRoutes = require("./routes/captain.routes");
-
 const mapsRoutes = require("./routes/maps.routes");
-
 const emailVerificationRoutes = require("./routes/emailVerification.routes");
-
 const rideRoutes = require("./routes/ride.routes");
 
-// Call the connectToDb function to establish a connection to the database
-connectToDb();
+// Middleware to parse incoming JSON requests
+app.use(express.json());
+
+// Middleware to parse incoming requests with URL-encoded payloads
+app.use(express.urlencoded({ extended: true }));
+
+// Use the cookie-parser middleware
+app.use(cookieParser());
 
 // Enable CORS to allow requests from other origins
 app.use(
@@ -38,29 +41,17 @@ app.use(
   })
 );
 
-// Middleware to parse incoming JSON requests
-app.use(express.json());
-
-// Middleware to parse incoming requests with URL-encoded payloads
-app.use(express.urlencoded({ extended: true }));
-
-app.use(cookieParser());
-
 // Define a simple GET route for the root URL that responds with "Hello World"
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Mount the user routes on the "/users" endpoint
+// Mount the user routes on their respective endpoints
 app.use("/users", userRoutes);
-
 app.use("/captains", captainRoutes);
-
 app.use("/email", emailVerificationRoutes);
-
 app.use("/maps", mapsRoutes);
-
 app.use("/rides", rideRoutes);
 
-// Export the app instance for use in other parts of the application
-module.exports = app;
+// Export the app instance and a function to initialize the database
+module.exports = { app, connectToDb };

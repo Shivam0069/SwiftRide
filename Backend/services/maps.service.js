@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+const captainModel = require("../models/captain.model");
 module.exports.getAddressCoordinate = async (address) => {
   const apiKey = process.env.GOOGLE_MAPS_API;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -11,8 +11,8 @@ module.exports.getAddressCoordinate = async (address) => {
     if (response.data.status === "OK") {
       const location = response.data.results[0].geometry.location;
       return {
-        latitude: location.lat,
-        longitude: location.lng,
+        ltd: location.lat,
+        lng: location.lng,
       };
     } else {
       throw new Error("Unable to fetch coordinates");
@@ -33,9 +33,13 @@ module.exports.getDistanceTime = async (origin, destination) => {
     const response = await axios.get(url);
     if (response.data.status === "OK") {
       const element = response.data.rows[0].elements[0];
+      console.log(response.data, "data");
+
       if (element.status === "ZERO_RESULTS") {
         throw new Error("No routes found");
       }
+      console.log(element, "element");
+
       return element;
     } else {
       throw new Error("Unable to fetch distance and time");
@@ -63,4 +67,16 @@ module.exports.getSuggestions = async (input) => {
     console.error(error);
     throw error;
   }
+};
+
+module.exports.getCaptainsInRadius = async (lat, lng, radius) => {
+  const captains = await captainModel.find({
+    location: {
+      $geoWithin: {
+        $centerSphere: [[lng, lat], radius / 6371], // [longitude, latitude]
+      },
+    },
+  });
+
+  return captains;
 };
