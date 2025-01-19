@@ -3,10 +3,29 @@ import { RiMapPinRangeFill } from "react-icons/ri";
 import { FaSquare } from "react-icons/fa";
 import { FaCreditCard } from "react-icons/fa6";
 import { UserPanelDataContext } from "../context/UserPanelContext";
+import { useSocket } from "../context/SocketContext";
+import { useRide } from "../context/RideContext";
 
 const LookingForRidder = () => {
-  const { lookingForRidderPanelOpen, selectedRide, completeRoute } =
-    useContext(UserPanelDataContext);
+  const {
+    lookingForRidderPanelOpen,
+    selectedRide,
+    completeRoute,
+    setLookingForRidderPanelOpen,
+    waitingForRidderPanelOpen,
+    setWaitingForRidderPanelOpen,
+  } = useContext(UserPanelDataContext);
+
+  const { receiveMessage } = useSocket();
+  const { setRideData } = useRide();
+
+  receiveMessage("ride-confirmed", (ride) => {
+    console.log(ride, "ride");
+
+    setRideData(ride);
+    setLookingForRidderPanelOpen(false);
+    setWaitingForRidderPanelOpen(true);
+  });
   return (
     <div
       className={`${

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserPanelDataContext = createContext();
 const UserPanelContext = ({ children }) => {
@@ -91,10 +91,14 @@ const UserPanelContext = ({ children }) => {
     }
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/rides/get-fare?pickup=${
-          route.pickup
-        }&destination=${route.destination}`,
-        { withCredentials: true }
+        `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
+        {
+          params: {
+            pickup: route.pickup,
+            destination: route.destination,
+          },
+          withCredentials: true,
+        }
       );
       if (response.status === 200) {
         setFare(response.data);
@@ -134,6 +138,8 @@ const UserPanelContext = ({ children }) => {
     </UserPanelDataContext.Provider>
   );
 };
+
+export const useUserPanel = () => useContext(UserPanelDataContext);
 
 export default UserPanelContext;
 export { UserPanelDataContext };

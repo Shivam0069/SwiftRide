@@ -3,6 +3,7 @@ import mapImg from "../assets/mapImg.png";
 import { IoIosArrowUp } from "react-icons/io";
 import { CaptainPanelDataContext } from "../context/CaptainPanelContext";
 import FinishRide from "../components/FinishRide";
+import LiveTracking from "../components/LiveTracking";
 
 const CaptainRiding = () => {
   const { finishRidePopup, setFinishRidePopup } = useContext(
@@ -16,7 +17,8 @@ const CaptainRiding = () => {
         }}
         className="h-4/5 w-full"
       >
-        <img src={mapImg} className="h-full w-full object-cover" />
+        {/* <img src={mapImg} className="h-full w-full object-cover" /> */}
+        <LiveTracking />
       </div>
       <div
         onClick={() => setFinishRidePopup(true)}

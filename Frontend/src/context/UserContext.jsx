@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 export const UserDataContext = createContext();
 
@@ -131,5 +131,7 @@ const UserContext = ({ children }) => {
     </div>
   );
 };
+
+export const useUser = () => useContext(UserDataContext);
 
 export default UserContext;

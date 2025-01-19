@@ -7,7 +7,7 @@ const Header = () => {
       <Link to="/">
         <img
           className="w-24 rounded"
-          // style={{ filter: "invert(1)" }}
+          style={{ filter: "invert(1)" }}
           src={swiftRideLogo}
         />
       </Link>

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
+import React from "react";
 import { Toaster } from "react-hot-toast";
+import { Route, Routes } from "react-router-dom";
+import CaptainProtectWrapper from "./components/CaptainProtectWrapper";
+import Header from "./components/Header";
+import LoginSignupProtectWrapper from "./components/LoginSignupProtectWrapper";
+import UserProtectWrapper from "./components/UserProtectWrapper";
+import CaptainHome from "./pages/CaptainHome";
 import CaptainLogin from "./pages/CaptainLogin";
+import CaptainRiding from "./pages/CaptainRiding";
 import CaptainSignup from "./pages/CaptainSignup";
+import Home from "./pages/Home";
+import Riding from "./pages/Riding";
 import Start from "./pages/Start";
 import UserLogin from "./pages/UserLogin";
 import UserSignup from "./pages/UserSignup";
-import Home from "./pages/Home";
-import CaptainHome from "./pages/CaptainHome";
-import UserProtectWrapper from "./components/UserProtectWrapper";
-import CaptainProtectWrapper from "./components/CaptainProtectWrapper";
-import LoginSignupProtectWrapper from "./components/LoginSignupProtectWrapper";
-import Riding from "./pages/Riding";
-import CaptainRiding from "./pages/CaptainRiding";
 
 export default function App() {
   // const [isLoading, setIsLoading] = useState(true);

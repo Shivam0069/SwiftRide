@@ -4,9 +4,11 @@ import { FaSquare } from "react-icons/fa";
 import { FaCreditCard } from "react-icons/fa6";
 import UberGo from "../assets/UberGo.png";
 import { UserPanelDataContext } from "../context/UserPanelContext";
+import { useRide } from "../context/RideContext";
 
 const WaitingForRidder = () => {
   const { waitingForRidderPanelOpen } = useContext(UserPanelDataContext);
+  const { rideData } = useRide();
   return (
     <div
       className={`${
@@ -26,10 +28,17 @@ const WaitingForRidder = () => {
           className="w-20 h-20 object-contain"
         />
         <div className="text-right">
-          <div className="text-lg font-medium text-gray-400">Shivam</div>
-          <div className="text-2xl font-semibold -my-1">MP04 AB 1234</div>
-          <div className="text-base font-normal text-gray-400">
-            Maruti Suzuki Alto
+          <div className="text-lg font-medium text-gray-400">
+            {rideData?.captain?.fullname?.firstname}
+          </div>
+          <div className="text-2xl font-semibold -my-1">
+            {rideData?.captain?.vehicle?.plate}
+          </div>
+          {/* <div className="text-base font-normal text-gray-400">
+            {rideData?.captain?.vehicle?.vehicleType}
+          </div> */}
+          <div className="text-base font-semibold text-gray-400">
+            OTP : {rideData?.otp}
           </div>
           <div></div>
         </div>
@@ -40,10 +49,12 @@ const WaitingForRidder = () => {
             <RiMapPinRangeFill className="w-8 h-8" />
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
-            <div className="font-semibold text-gray-50 text-lg">562/11-A</div>
-            <div className="font-medium">
-              Kaikondrahalli, Bengaluru, Karnataka
+            <div className="font-semibold text-gray-50 text-lg line-clamp-1">
+              {rideData?.pickup}
             </div>
+            {/* <div className="font-medium">
+              Kaikondrahalli, Bengaluru, Karnataka
+            </div> */}
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -51,9 +62,8 @@ const WaitingForRidder = () => {
             <FaSquare className="w-6 h-6" />
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
-            <div className="font-semibold text-gray-50 text-lg">562/11-A</div>
-            <div className="font-medium">
-              Kaikondrahalli, Bengaluru, Karnataka
+            <div className="font-semibold text-gray-50 text-lg line-clamp-1">
+              {rideData?.destination}
             </div>
           </div>
         </div>
@@ -63,7 +73,7 @@ const WaitingForRidder = () => {
           </div>
           <div className="text-gray-300 space-y-1 w-full border-b pb-2">
             <div className="font-semibold text-gray-50 text-lg">
-              &#8377;192.50
+              &#8377; {rideData?.fare}
             </div>
             <div className="font-medium">Cash Cash</div>
           </div>

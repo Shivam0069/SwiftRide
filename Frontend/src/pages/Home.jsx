@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import mapImg from "../assets/mapImg.png";
 import LocationSearchPanel from "../components/LocationSearchPanel";
@@ -9,8 +9,12 @@ import ConfirmRide from "../components/ConfirmRide";
 import LookingForRidder from "../components/LookingForRidder";
 import VehiclePanel from "../components/VehiclePanel";
 import WaitingForRidder from "../components/WaitingForRidder";
-import { UserDataContext } from "../context/UserContext";
+import { UserDataContext, useUser } from "../context/UserContext";
 import { UserPanelDataContext } from "../context/UserPanelContext";
+import { useSocket } from "../context/SocketContext";
+import { useRide } from "../context/RideContext";
+import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const {
@@ -19,11 +23,23 @@ const Home = () => {
     setVehiclePanelOpen,
     setConfirmRidePanelOpen,
     setLookingForRidderPanelOpen,
+    setWaitingForRidderPanelOpen,
     route,
     setRoute,
     setActiveField,
   } = useContext(UserPanelDataContext);
   const { logoutUser } = useContext(UserDataContext);
+  const { user } = useUser();
+  const { sendMessage, receiveMessage } = useSocket();
+  const { setRideData } = useRide();
+  console.log(user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      sendMessage("join", { userType: "user", userId: user._id });
+    }
+  }, [user]);
+  console.log(user);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -47,8 +63,16 @@ const Home = () => {
     setRoute({ ...route, destination: e.target.value });
   };
 
+  receiveMessage("ride-started", (data) => {
+    console.log("start-ride", data);
+
+    setWaitingForRidderPanelOpen(false);
+    setRideData(data);
+    navigate("/riding");
+  });
+
   return (
-    <div className="bg-[#191919] h-screen w-full relative overflow-hidden">
+    <div className=" h-screen w-full relative overflow-hidden">
       {" "}
       <div
         onClick={logoutHandler}
@@ -62,9 +86,12 @@ const Home = () => {
           setVehiclePanelOpen(false);
           setConfirmRidePanelOpen(false);
           setLookingForRidderPanelOpen(false);
+          setWaitingForRidderPanelOpen(false);
         }}
+        className="h-full w-full"
       >
-        <img src={mapImg} className="h-screen w-full object-cover" />
+        {/* <img src={mapImg} className="h-screen w-full object-cover" /> */}
+        <LiveTracking />
       </div>
       <div
         className={`h-screen w-full bg-[#191919] text-white absolute bottom-0 z-20 transition-transform duration-500 ${
