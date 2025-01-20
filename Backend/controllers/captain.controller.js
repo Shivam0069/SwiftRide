@@ -35,9 +35,9 @@ module.exports.registerCaptain = async (req, res, next) => {
     const token = captain.generateAuthToken();
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript from accessing cookies
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
-      sameSite: "strict", // Prevents cross-site request forgery
-      maxAge: 3600000, // 1 hour
+      secure: true, // Ensures the cookie is sent over HTTPS
+      // Prevents cross-site request forgery
+      // 1 hour
     });
 
     captain.password = undefined;
@@ -79,9 +79,8 @@ module.exports.loginCaptain = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript from accessing cookies
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
-      sameSite: "strict", // Prevents cross-site request forgery
-      maxAge: 3600000, // 1 hour
+      secure: true, // Ensures the cookie is sent over HTTPS
+      // 1 hour
     });
     res.status(200).json({ token, captain });
   } catch (error) {

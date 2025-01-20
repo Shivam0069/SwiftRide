@@ -54,9 +54,9 @@ module.exports.registerUser = async (req, res, next) => {
     user.password = undefined;
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript from accessing cookies
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
-      sameSite: "strict", // Prevents cross-site request forgery
-      maxAge: 3600000, // 1 hour
+      secure: true, // Ensures the cookie is sent over HTTPS
+      // Prevents cross-site request forgery
+      // 1 hour
     });
     // Return a 201 status with the token and user details
     res.status(201).json({ user, message: "User registered successfully!" });
@@ -104,9 +104,7 @@ module.exports.loginUser = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript from accessing cookies
-      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
-      sameSite: "strict", // Prevents cross-site request forgery
-      maxAge: 3600000, // 1 hour
+      secure: true, // Ensures the cookie is sent over HTTPS
     });
     user.password = undefined;
     res
