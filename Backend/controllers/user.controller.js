@@ -52,7 +52,12 @@ module.exports.registerUser = async (req, res, next) => {
     const token = user.generateAuthToken();
 
     user.password = undefined;
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript from accessing cookies
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
+      sameSite: "strict", // Prevents cross-site request forgery
+      maxAge: 3600000, // 1 hour
+    });
     // Return a 201 status with the token and user details
     res.status(201).json({ user, message: "User registered successfully!" });
   } catch (error) {
@@ -97,7 +102,12 @@ module.exports.loginUser = async (req, res, next) => {
     const token = user.generateAuthToken();
     // Return a 200 status with the token and user details
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript from accessing cookies
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
+      sameSite: "strict", // Prevents cross-site request forgery
+      maxAge: 3600000, // 1 hour
+    });
     user.password = undefined;
     res
       .status(200)

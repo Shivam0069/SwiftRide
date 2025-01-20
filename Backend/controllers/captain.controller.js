@@ -33,7 +33,12 @@ module.exports.registerCaptain = async (req, res, next) => {
     });
 
     const token = captain.generateAuthToken();
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript from accessing cookies
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
+      sameSite: "strict", // Prevents cross-site request forgery
+      maxAge: 3600000, // 1 hour
+    });
 
     captain.password = undefined;
     res.status(201).json({ token, captain });
@@ -72,7 +77,12 @@ module.exports.loginCaptain = async (req, res, next) => {
     // Remove password from captain object before sending it in response
     captain.password = undefined;
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript from accessing cookies
+      secure: process.env.NODE_ENV === "production", // Ensures the cookie is sent over HTTPS
+      sameSite: "strict", // Prevents cross-site request forgery
+      maxAge: 3600000, // 1 hour
+    });
     res.status(200).json({ token, captain });
   } catch (error) {
     // Log any errors to the console
